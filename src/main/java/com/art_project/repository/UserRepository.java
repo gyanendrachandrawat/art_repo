@@ -17,8 +17,12 @@ public interface UserRepository extends JpaRepository<UserModel, Integer> {
 	Optional<UserModel> findById(Integer id);
 
 	@Modifying
-	@Query(value = "update user set payment_status = ? where id = ?", nativeQuery = true)
+	@Query(value = "update user set paymentDone = ? where id = ?", nativeQuery = true)
 	void updatePaymentById(String paymentDone, int id);
+	
+	@Modifying
+	@Query(value = "update user set paymentDone = ? where mobile = ?", nativeQuery = true)
+	void updatePaymentByMobile(String paymentDone, int id);
 
 	@Modifying
 	@Query(value = "update user set points = points + 1 where id = ?", nativeQuery = true)

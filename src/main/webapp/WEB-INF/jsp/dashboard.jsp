@@ -7,7 +7,7 @@
 <title>Welcome</title>
 </head>
 <body>
-<p style="color:green"><%= request.getAttribute("paymentStatus")%></p><br><br>
+<p style="color:green"><%= request.getAttribute("paymentDone")%></p><br><br>
 <h1>DASHBOARD</h1>
 </body>
 </html>

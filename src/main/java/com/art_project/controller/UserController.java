@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.art_project.model.UserModel;
 import com.art_project.model.result.ResultWrapper;
@@ -43,6 +47,8 @@ public class UserController {
 
 	private ResultWrapper<UserModel> result = new ResultWrapper<UserModel>();
 
+	HttpSession session;
+
 	@RequestMapping
 	public String redirect() {
 		return "redirect:/login";
@@ -57,7 +63,7 @@ public class UserController {
 	@PostMapping(value = "/login")
 	public String loginPost(HttpServletRequest request, Model model, @ModelAttribute("userModel") UserModel userModel) {
 
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		String token = getLoginToken(userModel);
 		userModel = userService.findOne(userModel.getMobile());
 		String paymentDone = userModel.getPaymentDone();
@@ -69,11 +75,13 @@ public class UserController {
 			if (paymentDone.equals("yes")) {
 				session.setAttribute("userId", userModel.getId());
 				System.out.println(" token: " + token);
-				return "dashboard";
+				return "redirect:/dashboard";
 			} else {
 				session.setAttribute("userId", userModel.getId());
+				session.setAttribute("redirectSuccess", "dashboard");
+				session.setAttribute("redirectError", "pay");
 				System.out.println("user id: " + userModel.getId());
-				return "payment";
+				return "redirect:/pay";
 			}
 		} else {
 			request.setAttribute("loginStatus", "username or password incorrect.");
@@ -92,11 +100,28 @@ public class UserController {
 	public String signUpPost(HttpServletRequest request, Model model,
 			@ModelAttribute("userModel") UserModel userModel) {
 
-		result = userService.saveUser(userModel);
-		// request.setAttribute("registerStatus", "REGISTERED SUCCESSFULLY.");
-		model.addAttribute(userModel);
+		session = request.getSession();
 
-		return "redirect:/login";
+		session.setAttribute("redirectSuccess", "login");
+		session.setAttribute("redirectError", "login");
+
+		result = userService.saveUser(userModel);
+		if (result.getResult() != null) {
+			model.addAttribute(userModel);
+			session.setAttribute("userId", userModel.getId());
+			return "redirect:/pay";
+		}
+
+		else
+			return "redirect:/login";
+	}
+
+	@PostMapping(value = "/sign-up/isRegistered", params = "mobile")
+	public ResponseEntity<?> checkIfRegistered(HttpServletRequest request, @RequestParam String mobile) {
+		// System.out.println(
+		// "got the status as user registered: " + userService.checkIfRegistered(mobile)
+		// + ", number: " + mobile);
+		return new ResponseEntity<>(userService.checkIfRegistered(mobile), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/dashboard", method = { RequestMethod.GET, RequestMethod.POST })
@@ -113,6 +138,7 @@ public class UserController {
 			System.out.println("authentication token: " + authentication);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			token = jwtTokenUtil.generateToken(authentication);
+
 		} catch (Exception exception) {
 			System.out.println("an error occured : " + exception.getMessage());
 		}

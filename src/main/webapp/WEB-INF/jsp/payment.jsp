@@ -22,7 +22,7 @@
 <div class="col-md-6 col-sm-offset-3">
 <h2>PAYMENT DETAILS..</h2>
 <p style="color:red"><%= request.getAttribute("paymentStatus")%></p><br><br>
-<form action="/charge" method="post" id="payment-form">
+<form action="/pay" method="post" id="payment-form">
 
 <div class="form-group">
     <label for="card-name">Card Name</label>

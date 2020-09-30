@@ -23,7 +23,7 @@ public class MessageService {
 	public Message sendMessage(UserModel signupModel) {
 		Twilio.init(twilio_sid, twilio_auth_token);
 
-		Message message = Message.creator(new PhoneNumber(signupModel.getMobile()), new PhoneNumber(twilio_trial_number),"Congratulations.. You are succesfully signed up with Art & Gallery.").create();
+		Message message = Message.creator(new PhoneNumber(signupModel.getMobile()), new PhoneNumber(twilio_trial_number),"Congratulations.. You are succesfully signed up.").create();
 		System.out.println("message sent");
 		return message;
 	}

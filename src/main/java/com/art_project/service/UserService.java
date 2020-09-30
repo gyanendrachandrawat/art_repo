@@ -36,34 +36,51 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private ConnectService connectService;
-	
+
 	private UserModel userModel = new UserModel();
 
-	private ResultWrapper<UserModel> result = new ResultWrapper<>();
+	private ResultWrapper<UserModel> result;
 
 	/*
 	 * method to save user details
 	 */
 	public ResultWrapper<UserModel> saveUser(UserModel userModel) {
 
-		userModel.setPaymentDone("no");
-		userModel.setPoints(0);
-		userModel.setLevel(1);
-		userModel.setLink(generateLink(userModel.getId()));
+		result = new ResultWrapper<>();
+		
+		userRepository.save(userModel);
+		
+		UserModel userModelNew = userModel;
+		System.out.println("\n"+ userRepository.findByMobile(userModelNew.getMobile()));
+		if (userRepository.findByMobile(userModelNew.getMobile()) != null) {
 
-		updateUserStats(userModel);
-		userModel.setPassword(bcryptEncoder.encode(userModel.getPassword()));
-		// messageService.sendMessage(userModel);
-		try {
-			result.setResult(userRepository.save(userModel));
-			result.setStatus(Result.SUCCESS);
-			result.setMessage("successfully saved the user details");
-			return result;
-		} catch (Exception e) {
+			userModel.setPaymentDone("no");
+			userModel.setPoints(0);
+			userModel.setLevel(1);
+			userModel.setLink(generateLink(userModel.getId()));
+
+			// updateUserStats(userModel);
+			userModel.setPassword(bcryptEncoder.encode(userModel.getPassword()));
+			// messageService.sendMessage(userModel);
+			try {
+				result.setResult(userRepository.save(userModel));
+				result.setStatus(Result.SUCCESS);
+				result.setMessage("successfully saved the user details");
+				System.out.println(result.getMessage());
+				return result;
+			} catch (Exception e) {
+				result.setResult(null);
+				result.setStatus(Result.EXCEPTION);
+				result.setMessage("failed to save user, exception: " + e);
+				System.out.println(result.getMessage());
+				return result;
+			}
+		} else {
 			result.setResult(null);
 			result.setStatus(Result.FAIL);
-			result.setMessage("failed to save user, exception: " + e);
-			return null;
+			result.setMessage("the user already exists.");
+			System.out.println(result.getMessage());
+			return result;
 		}
 	}
 
@@ -75,7 +92,16 @@ public class UserService implements UserDetailsService {
 	}
 
 	/*
-	 * method to get user details from unique username ( mobile in this case )
+	 * method to check if a user is registered
+	 */
+	public String checkIfRegistered(String mobile) {
+		if (userRepository.findByMobile(mobile) != null)
+			return "yes";
+		return "no";
+	}
+
+	/*
+	 * •••••method to get user details from unique username ( mobile in this case )
 	 */
 	public UserDetails loadUserByUsername(String mobile) {
 		UserModel user = userRepository.findByMobile(mobile);
@@ -128,21 +154,20 @@ public class UserService implements UserDetailsService {
 	 * method to generate a unique link for each user.
 	 */
 	private String generateLink(int id) {
-		return null;
+		return "link12345";
 	}
-	
-	
+
 	/*
 	 * method to set all user details to POJO.
 	 */
-	public void setUserModel(UserModel userModel) {	
+	public void setUserModel(UserModel userModel) {
 		this.userModel = userModel;
 	}
-	
+
 	/*
 	 * method to get all user details from POJO.
 	 */
 	public UserModel getUserModel() {
-		return userModel;	
+		return userModel;
 	}
 }
