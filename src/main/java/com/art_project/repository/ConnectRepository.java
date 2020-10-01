@@ -1,6 +1,7 @@
 package com.art_project.repository;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,9 @@ public interface ConnectRepository extends JpaRepository<ConnectModel, Integer> 
 	@Modifying
 	@Query(value = "update connect set dateConnect = ? where id = ?", nativeQuery = true)
 	void updateDateConnectById(Date dateConnect, int id);
+
+	List<ConnectModel> findByUserIdAndStatus(Integer userId, String status);
+
+//	@Query(value = "select from connect where userId = ? and status = ?", nativeQuery = true)
+	ArrayList<ConnectModel> findConnectsByUserIdAndStatus(Integer userId, String status);
 }

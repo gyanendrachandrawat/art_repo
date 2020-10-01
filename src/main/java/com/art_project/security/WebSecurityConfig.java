@@ -47,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers("/", "/css/**", "/icons/**", "/js/**", "/sign-up", "/sign-up/isRegistered", "/login",
-						"/pay", "/dashboard/connect")
+						"/pay", "/dashboard/**", "/dashboard/connect", "/dashboard/getInvitePage/pending", "/dashboard/getInvitePage/connected", 
+						"/dashboard/inviteData/pending", "/dashboard/inviteData/connected")
 				.permitAll().anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

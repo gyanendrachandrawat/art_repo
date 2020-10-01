@@ -48,11 +48,19 @@ public class UserService implements UserDetailsService {
 
 		result = new ResultWrapper<>();
 		
-		userRepository.save(userModel);
+//		userRepository.save(userModel);
 		
 		UserModel userModelNew = userModel;
 		System.out.println("\n"+ userRepository.findByMobile(userModelNew.getMobile()));
 		if (userRepository.findByMobile(userModelNew.getMobile()) != null) {
+
+			result.setResult(null);
+			result.setStatus(Result.FAIL);
+			result.setMessage("the user already exists.");
+			System.out.println(result.getMessage());
+			return result;
+
+		} else {
 
 			userModel.setPaymentDone("no");
 			userModel.setPoints(0);
@@ -75,12 +83,7 @@ public class UserService implements UserDetailsService {
 				System.out.println(result.getMessage());
 				return result;
 			}
-		} else {
-			result.setResult(null);
-			result.setStatus(Result.FAIL);
-			result.setMessage("the user already exists.");
-			System.out.println(result.getMessage());
-			return result;
+			
 		}
 	}
 

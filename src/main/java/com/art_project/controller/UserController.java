@@ -74,6 +74,7 @@ public class UserController {
 
 			if (paymentDone.equals("yes")) {
 				session.setAttribute("userId", userModel.getId());
+				model.addAttribute("usersname", userModel.getName());
 				System.out.println(" token: " + token);
 				return "redirect:/dashboard";
 			} else {

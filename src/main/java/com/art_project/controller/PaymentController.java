@@ -39,6 +39,7 @@ public class PaymentController {
 
 		HttpSession session = request.getSession();
 		int id = (int) session.getAttribute("userId");
+		System.out.println("user id from payment : "+id);
 
 		String stripeToken = request.getParameter("stripeToken");
 
@@ -46,10 +47,11 @@ public class PaymentController {
 		String chargeId = charge.getId();
 
 		String status = charge.getStatus();
+		System.out.println("payment status : "+status);
 
 		if (status.equals("succeeded")) {
 			request.setAttribute("paymentStatus", "payment successful, charge id: " + chargeId);
-			userService.updatePayementById(status, id);
+			userService.updatePayementById("yes", id);
 			return "redirect:/"+session.getAttribute("redirectSuccess");
 		} else {
 			request.setAttribute("paymentStatus", "payment failed due to following reason: " + charge.getDescription());
