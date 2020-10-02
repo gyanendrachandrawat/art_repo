@@ -60,9 +60,20 @@ public class ConnectController {
 		return "dashboard";
 	}
 	
+//	temporary inviteLink
+//	http://localhost:8080/referral?referralId=9
 	@RequestMapping(value = "/connect", method = RequestMethod.GET)
 	public String getInvite(HttpServletRequest request, Model model,
 			@ModelAttribute("connectModel") ConnectModel connectModel) {
+		
+		HttpSession session = request.getSession();
+		Integer userId = (Integer)session.getAttribute("userId");
+//		String inviteLink = "http://localhost:8080/referral?referralId="+userId;
+		String inviteLink = "localhost:8080/referral?referralId="+userId;
+		System.out.println("inviteLink : "+inviteLink);
+		model.addAttribute("link", inviteLink);
+		
+		
 		return "connect";
 	}
 	

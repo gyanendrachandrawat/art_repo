@@ -79,4 +79,19 @@ public class ConnectService {
 //		ArrayList<ConnectModel> resultInviteList = (ArrayList<ConnectModel>)connectRepository.findAll();
 		return resultInviteList;
 	}
+
+	public ResultWrapper<ConnectModel> updateInvitedUserStatus(Integer referralId, String mobile) {
+		try {
+			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referralId, mobile);
+			connectModel.setStatus("connected");
+			result.setResult(connectRepository.save(connectModel));
+			result.setStatus(Result.SUCCESS);
+			result.setMessage("invite found with given referred UserId and mobile");
+		} catch (Exception e) {
+			result.setResult(null);
+			result.setStatus(Result.FAIL);
+			result.setMessage("invite not found with given referred UserId and mobile");
+		}
+		return result;
+	}
 }

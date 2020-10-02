@@ -19,6 +19,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  	<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+	<!-- CDN link for js to create qr code -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <!-- font awesome -->
@@ -133,7 +135,7 @@
       <form>
         <div class="form-group position-relative">
           <label class="color-white">Reference Link</label>
-          <input type="text" class="form-control color-grey-lighter" id="refLink" name="refLink">
+          <input type="text" class="form-control color-grey-lighter" id="refLink" name="refLink" value=${link} readonly>
           <span class="copy position-absolute"><img class="mr-2 " src="/icons/copy.png">Copy</span>
         </div>
       </form>
@@ -173,7 +175,11 @@
 
     </div>
      <div class="float-left">
-        <img class="w-50 h-50 p-4 mt-3" src="/icons/img_avatar.png" alt="barcode">
+     <!-- BAR CODE -->
+        <!-- <img class="w-50 h-50 p-4 mt-3" src="/icons/img_avatar.png" alt="barcode" id="barcode"> -->
+        <div class="w-50 h-50 p-4 mt-3" id="qrcode">
+			
+		</div>
       </div>
   </section>
 </div>
@@ -297,7 +303,8 @@
 <!-- j query -->
 <script>
   $(document).ready(function(){
-  $("#invite").show()
+//  $("#invite").show();
+	inviteShow();
   $("#connect").hide();
   $("#pending").hide();
 });
@@ -306,6 +313,20 @@ function inviteShow() {
   $("#invite").show();
   $(".point").css("background", "#818489")
   $(".pointInvite").css("background", "#4d5055");
+
+//CODE FOR QR CODE GENERATION
+
+	$("#qrcode").empty();
+	
+  var qrcode = new QRCode("qrcode");
+
+  var codetext = $("#refLink").val();
+  console.log("qrcode text value : "+codetext);
+
+  qrcode.makeCode(codetext);
+
+
+  
 }
 function connectShow() {
   $(".sec").hide();
@@ -378,6 +399,8 @@ function pendingShow() {
 	
   
 }
+
+
 
 
 </script>
