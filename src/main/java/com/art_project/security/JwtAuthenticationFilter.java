@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,14 +35,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		String header = request.getHeader(HEADER_STRING);
+
+		Cookie[] cookies = request.getCookies();
+		String token = null;
+
+		for (int i = 0; i < cookies.length; i++) {
+
+			Cookie cookie = cookies[i];
+
+			if (cookie.getName().equals(HEADER_STRING)) {
+				token = cookie.getValue();
+			}
+		}
+
 		String username = null;
 		String authToken = null;
-		if (header != null && header.startsWith(TOKEN_PREFIX)) {
-			authToken = header.replace(TOKEN_PREFIX, "");
+		if (token != null && token.startsWith(TOKEN_PREFIX)) {
+			authToken = token.replace(TOKEN_PREFIX, "");
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(authToken);
-				System.out.println("get username from token "+username);
+				System.out.println("get username from token " + username);
 			} catch (IllegalArgumentException e) {
 				logger.error("an error occured during getting username from token: ", e);
 			} catch (ExpiredJwtException e) {
@@ -56,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-			System.out.println("user details : "+userDetails);
+			System.out.println("user details : " + userDetails);
 			if (jwtTokenUtil.validateToken(authToken, userDetails)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));

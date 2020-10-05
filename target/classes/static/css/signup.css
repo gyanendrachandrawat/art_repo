@@ -1,0 +1,75 @@
+html{
+	height:100%;
+}
+
+body {
+	height:100%;
+    background-color: #2c2929;
+     /*
+    background-color:  rgb(32, 31, 31);
+    background-color: #CCCCCC;
+      Background-color: #FFFFFF;
+    */
+}
+
+.container-fluid{
+    size: 150%;
+    border: none;
+}
+
+.form-container{
+    top: 20vh;
+	background: #B3B3B3;
+	padding: 32px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #000;
+    text-align: center;
+}
+
+.form-control{
+	border-radius: 8px;
+	width: 80%;
+	margin: 2%;
+	text-indent: 8%;
+}
+
+.user{
+	background-image: url('user.jpg');
+    background-repeat: no-repeat;
+	background-size: 5%;
+	background-position: 1.5% 50%;
+}
+
+.password{
+	background-image: url('key.png');
+    background-repeat: no-repeat;
+	background-size: 5%;
+	background-position: 2% 50%;
+}
+
+.question{
+    background-color: #B3B3B3;
+    border:none;
+    font-size: 150%;
+}
+
+a.privacy-policy{
+    color: green;
+}
+
+.existing-user{
+	color: white;
+}
+
+.btn{
+	background-color: #444749;
+	border-radius: 4px;
+}
+
+.tab {
+    display: none;
+}
+
+.step{
+    display: none;
+}
