@@ -14,6 +14,7 @@
 <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css"
 	rel="stylesheet">
 <link rel="stylesheet" href="/css/login.css">
+<link rel="stylesheet" href="/css/connect.css">
 <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
 <title>Login</title>
 
@@ -27,26 +28,36 @@
 				class="form-container col-xl-4 col-lg-4 col-md-6 col-sm-8 col-12"
 				method="POST" modelAttribute="userModel" action="login">
 				<div class="form-group">
-					<form:input path="mobile" class="form-control user"
+					<span class="position-absolute user-position"><img
+						src="icons/user.png"></span>
+					<form:input path="mobile"
+						class="form-control user w-100 mx-auto rounded-0 pl-4"
 						placeholder="Mobile" />
 				</div>
 
 				<div class="form-group">
-					<form:password path="password" class="form-control password"
+					<span class="position-absolute lock-position"><img
+						src="icons/lock.png"></span>
+					<form:password path="password"
+						class="form-control password w-100 mx-auto rounded-0 pl-4"
 						placeholder="Password" />
 				</div>
 
 				<div class="form-group form-check">
 					<input type="checkbox" class="form-check-input" id="remember_me">
 
-					<small> <label class="form-check-label" for="remember-me">Remember
-							Me</label> <a href=# class="forgot-password float-right">Forgot
+					<small> <label class="form-check-label color-white ml-2 mt-2" for="remember-me">Remember
+							Me</label> <a href=# class="forgot-password float-right ml-2 mt-2">Forgot
 							Password?</a>
 					</small>
 				</div>
 
-				<input type="submit" value="Submit" class="btn btn-dark" />
+				<div class="submit-btn text-center">
+					<input type="submit" value="Submit" class="btn btn-dark" />
+				</div>
 			</form:form>
+		</div>
+		<div class="w-10 mx-auto my-auto ">
 			<small class="new-user"> New to product? <a href="sign-up"
 				class="sign-up">Sign Up </a>
 			</small>

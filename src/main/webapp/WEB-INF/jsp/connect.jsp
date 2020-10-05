@@ -197,7 +197,6 @@
 						</button>
 					</div>
 				</form:form>
-
 			</div>
 			<div class="float-left">
 				<!-- BAR CODE -->

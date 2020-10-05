@@ -51,8 +51,35 @@ a.forgot-password {
 	position: absolute;
 	top: 60%;
 	color: white;
+	margin-top: 77px;
 }
 
 .sign-up {
 	color: rgb(0, 140, 255);
+}
+
+/* my css */
+
+.position-absolute.user-position {
+    top: 34px;
+    left: 39px;
+    transform: translate(10px , 10px);
+    padding-left: 5px;
+}
+
+.position-absolute.lock-position {
+    top: 88px;
+    left: 45px;
+    transform: translate(10px , 10px);
+}
+
+input[type="checkbox"]{
+	width: 20px;
+	height: 20px; 
+}
+
+.new-signup {
+    width: 50%;
+    margin: 0 auto;
+    display: contents;
 }

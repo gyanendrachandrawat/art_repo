@@ -84,30 +84,30 @@
 					<h4>My Data</h4>
 				</div>
 				<div class="col color-grey text-center border w-25 p-5 m-5">
-					<a href="/dashboard/connect"><h4>Connect</h4></a>
+					<h4>
+						<a href="/dashboard/connect">Connect</a>
+					</h4>
 				</div>
 				<div class="col color-grey text-center border w-25 p-5 m-5">
 					<h4>My Wallet</h4>
 				</div>
-				<!-- <div class="col color-grey p-5 text-center border m-2">
-          <h4>My Data</h4>
-        </div>
-        <div class="col color-grey p-5 text-center border m-2">
-          <h4>Connect</h4>
-        </div>
-        <div class="col color-grey p-5 text-center border m-2">
-          <h4>My Wallet</h4> -->
 			</div>
 		</div>
-	</div>
 	</section>
 
 </body>
 
 <script>
 	function logout() {
-<%session.setAttribute("valid", "no");%>
-	window.location.replace("/");
+		$.ajax({
+			type : "get",
+			url : "/logoutSession",
+			success : function(data) {
+				window.location.replace("/");
+			},
+			error : function(e) {
+			}
+		});
 	}
 </script>
 

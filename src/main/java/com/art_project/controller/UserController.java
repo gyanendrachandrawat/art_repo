@@ -61,31 +61,25 @@ public class UserController {
 	@RequestMapping
 	public String redirect(HttpServletRequest request, HttpServletResponse response) {
 
-		session = request.getSession(false);
-		System.out.println(session.getAttribute("valid"));
-		
-		if (session == null) {
-			System.out.println("to login...");
+		session = request.getSession();
+
+		if (session.getAttribute("valid") == null) {
 			return "redirect:/login";
 		} else {
 			if (session.getAttribute("valid").equals("yes")) {
-				System.out.println("redirecting to dashboard...");
 				return "redirect:/dashboard";
 			} else {
 				Cookie[] cookies = request.getCookies();
 				session.invalidate();
 
-				System.out.println("logging out...");
+				if (cookies != null)
+					for (int i = 0; i < cookies.length; i++) {
 
-				for (int i = 0; i < cookies.length; i++) {
-
-					Cookie cookie = cookies[i];
-
-					if (cookie.getName().equals(HEADER_STRING)) {
-						cookie.setValue("");
+						if (cookies[i].getName().equals(HEADER_STRING)) {
+							cookies[i].setValue("");
+						}
+						response.addCookie(cookies[i]);
 					}
-					response.addCookie(cookie);
-				}
 				return "redirect:/login";
 			}
 		}
@@ -96,20 +90,11 @@ public class UserController {
 		return "login";
 	}
 
-	@GetMapping(value = "/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		Cookie[] cookies = request.getCookies();
-
-		for (int i = 0; i < cookies.length; i++) {
-
-			Cookie cookie = cookies[i];
-
-			if (cookie.getName().equals(HEADER_STRING)) {
-				cookie.setValue("");
-			}
-			response.addCookie(cookie);
-		}
-		return "redirect:/login";
+	@GetMapping(value = "/logoutSession")
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		session = request.getSession();
+		session.setAttribute("valid", "no");
+		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/login")
