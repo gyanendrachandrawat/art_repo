@@ -103,7 +103,7 @@ public class UserController {
 	public String signUpGet(HttpServletRequest request, Model model, @ModelAttribute("userModel") UserModel userModel) {
 //		System.out.println("referralId : "+referralId);		
 		model.addAttribute("userModel", userModel);
-		return "sign-up";
+		return "signup";
 	}
 	
 //	temporary inviteLink
@@ -117,7 +117,7 @@ public class UserController {
 		
 		model.addAttribute("userModel", userModel);
 		
-		return "sign-up";
+		return "signup";
 	}
 
 	@PostMapping(value = "/sign-up")

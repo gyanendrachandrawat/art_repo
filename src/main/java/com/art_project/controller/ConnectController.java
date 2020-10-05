@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.art_project.model.ConnectModel;
 import com.art_project.model.result.ResultWrapper;
 import com.art_project.service.ConnectService;
+import com.art_project.service.MessageService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +42,7 @@ public class ConnectController {
 	public String saveInvite(HttpServletRequest request, Model model,
 			@ModelAttribute("connectModel") ConnectModel connectModel) {
 
-		connectModel.setStatus("test");
+		connectModel.setStatus("pending");
 				
 		HttpSession session = request.getSession();
 		connectModel.setUserId((Integer)session.getAttribute("userId"));
@@ -50,6 +51,7 @@ public class ConnectController {
 		
 		result = connectService.saveConnect(connectModel);
 		
+		//new MessageService().sendMessage(connectModel.getMobile());
 //		HttpSession session = request.getSession();
 
 		System.out.println("connect user id: "+ session.getAttribute("userId"));
@@ -57,7 +59,7 @@ public class ConnectController {
 		// request.setAttribute("registerStatus", "REGISTERED SUCCESSFULLY.");
 		model.addAttribute(connectModel);
 
-		return "dashboard";
+		return "connect";
 	}
 	
 //	temporary inviteLink
@@ -88,7 +90,7 @@ public class ConnectController {
 		
 		String status = null;
 		if (type.equals("pending")) {
-			status = "test";
+			status = "pending";
 		}
 		else if (type.equals("connected")) {
 			status = "connected";
