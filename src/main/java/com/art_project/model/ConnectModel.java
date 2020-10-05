@@ -35,10 +35,13 @@ public class ConnectModel {
 	@Column
 	private int id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "userId", nullable = true)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private UserModel userModel;
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "userId", nullable = true)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private UserModel userModel;
+	
+	@Column
+	private Integer userId;
 
 	@Column
 	private String name;

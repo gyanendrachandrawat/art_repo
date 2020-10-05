@@ -48,11 +48,19 @@ public class UserService implements UserDetailsService {
 
 		result = new ResultWrapper<>();
 		
-		userRepository.save(userModel);
+//		userRepository.save(userModel);
 		
 		UserModel userModelNew = userModel;
 		System.out.println("\n"+ userRepository.findByMobile(userModelNew.getMobile()));
 		if (userRepository.findByMobile(userModelNew.getMobile()) != null) {
+
+			result.setResult(null);
+			result.setStatus(Result.FAIL);
+			result.setMessage("the user already exists.");
+			System.out.println(result.getMessage());
+			return result;
+
+		} else {
 
 			userModel.setPaymentDone("no");
 			userModel.setPoints(0);
@@ -75,12 +83,7 @@ public class UserService implements UserDetailsService {
 				System.out.println(result.getMessage());
 				return result;
 			}
-		} else {
-			result.setResult(null);
-			result.setStatus(Result.FAIL);
-			result.setMessage("the user already exists.");
-			System.out.println(result.getMessage());
-			return result;
+			
 		}
 	}
 
@@ -170,4 +173,31 @@ public class UserService implements UserDetailsService {
 	public UserModel getUserModel() {
 		return userModel;
 	}
+
+	public ResultWrapper<UserModel> updatePointOrLevelOfUser(Integer referralId) {
+		UserModel userModel = userRepository.findById(referralId).orElse(null);
+		if (userModel == null) {
+			result.setResult(null);
+			result.setStatus(Result.FAIL);
+			result.setMessage("user with referred userId not found");
+		} else {
+			Integer points = userModel.getPoints();
+			if (points/50 == 0) {
+				Integer level = userModel.getLevel();
+				level = level + 1;
+				points = points + 1;
+				userModel.setLevel(level);
+				userModel.setPoints(points);
+			} else {
+				points = points + 1;
+				userModel.setPoints(points);
+			}
+			result.setResult(userRepository.save(userModel));
+			result.setStatus(Result.SUCCESS);
+			result.setMessage("user updated successfully on referral registration");
+		}
+		return result;
+	}
+	
+	
 }

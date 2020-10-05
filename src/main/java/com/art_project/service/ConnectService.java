@@ -1,11 +1,13 @@
 package com.art_project.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class ConnectService {
 
 	public ResultWrapper<ConnectModel> saveConnect(ConnectModel connectModel) {
 		try {
-			connectModel.setUserModel(userService.getUserModel());
+//			connectModel.setUserModel(userService.getUserModel());
 			connectModel.setDateInvite(new java.sql.Date(System.currentTimeMillis()));
 			result.setResult(connectRepository.save(connectModel));
 			result.setStatus(Result.SUCCESS);
@@ -55,7 +57,8 @@ public class ConnectService {
 			for (ConnectModel c : invites)
 				if (c.getStatus().equals("pending")) {
 					inviteMap = new LinkedHashMap<Integer, Integer>();
-					inviteMap.put(c.getId(), c.getUserModel().getId());
+//					inviteMap.put(c.getId(), c.getUserModel().getId());
+					inviteMap.put(c.getId(), c.getUserId());
 				}
 			return inviteMap;
 		} else {
@@ -69,5 +72,26 @@ public class ConnectService {
 
 	public void updateDateConnect(Date dateConnect, int id) {
 		connectRepository.updateDateConnectById(dateConnect, id);
+	}
+
+	public ArrayList<ConnectModel> getInviteData(Integer userId, String status) {
+		ArrayList<ConnectModel> resultInviteList = connectRepository.findConnectsByUserIdAndStatus(userId, status);
+//		ArrayList<ConnectModel> resultInviteList = (ArrayList<ConnectModel>)connectRepository.findAll();
+		return resultInviteList;
+	}
+
+	public ResultWrapper<ConnectModel> updateInvitedUserStatus(Integer referralId, String mobile) {
+		try {
+			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referralId, mobile);
+			connectModel.setStatus("connected");
+			result.setResult(connectRepository.save(connectModel));
+			result.setStatus(Result.SUCCESS);
+			result.setMessage("invite found with given referred UserId and mobile");
+		} catch (Exception e) {
+			result.setResult(null);
+			result.setStatus(Result.FAIL);
+			result.setMessage("invite not found with given referred UserId and mobile");
+		}
+		return result;
 	}
 }

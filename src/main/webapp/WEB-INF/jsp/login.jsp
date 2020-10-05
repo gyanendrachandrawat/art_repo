@@ -13,70 +13,9 @@
 <link rel="stylesheet" href="styles.css">
 <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css"
 	rel="stylesheet">
-
+<link rel="stylesheet" href="/css/login.css">
 <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
 <title>Login</title>
-
-<style type="text/css">
-html {
-	height: 100%;
-}
-
-body {
-	height: 100%;
-	background-color: rgb(32, 31, 31);
-	/*// background-color: #CCCCCC;
-  	// background-color: #FFFFFF;*/
-}
-
-a.forgot-password {
-	color: #FFFFFF;
-}
-
-.form-container {
-	top: 30vh;
-	background: #B3B3B3;
-	padding: 32px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 10px 0px #000;
-}
-
-.form-control {
-	border-radius: 8px;
-	width: 80%;
-	margin: 2%;
-	text-indent: 8%;
-}
-
-.user {
-	background-image: url('./icons/user.jpg');
-	background-repeat: no-repeat;
-	background-size: 5%;
-	background-position: 1.5% 50%;
-}
-
-.password {
-	background-image: url('./icons/key.png');
-	background-repeat: no-repeat;
-	background-size: 5%;
-	background-position: 2% 50%;
-}
-
-.btn {
-	background-color: #444749;
-	border-radius: 4px;
-}
-
-.new-user {
-	position: absolute;
-	top: 60%;
-	color: white;
-}
-
-.sign-up {
-	color: rgb(0, 140, 255);
-}
-</style>
 
 </head>
 

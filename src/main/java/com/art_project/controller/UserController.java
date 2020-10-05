@@ -16,14 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.art_project.model.ConnectModel;
 import com.art_project.model.UserModel;
+import com.art_project.model.result.Result;
 import com.art_project.model.result.ResultWrapper;
 import com.art_project.security.JwtTokenUtil;
+import com.art_project.service.ConnectService;
 import com.art_project.service.PaymentService;
 import com.art_project.service.UserService;
 
@@ -44,6 +48,9 @@ public class UserController {
 
 	@Autowired
 	private PaymentService paymentService;
+	
+	@Autowired
+	private ConnectService connectService;
 
 	private ResultWrapper<UserModel> result = new ResultWrapper<UserModel>();
 
@@ -74,6 +81,7 @@ public class UserController {
 
 			if (paymentDone.equals("yes")) {
 				session.setAttribute("userId", userModel.getId());
+				model.addAttribute("usersname", userModel.getName());
 				System.out.println(" token: " + token);
 				return "redirect:/dashboard";
 			} else {
@@ -91,9 +99,25 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/sign-up")
+//	@GetMapping({"/sign-up","/sign-up/referral/{}"})
 	public String signUpGet(HttpServletRequest request, Model model, @ModelAttribute("userModel") UserModel userModel) {
+//		System.out.println("referralId : "+referralId);		
 		model.addAttribute("userModel", userModel);
-		return "sign-up";
+		return "signup";
+	}
+	
+//	temporary inviteLink
+//	http://localhost:8080/referral?referralId=9
+	@GetMapping(value = "/referral")
+	public String referral(HttpServletRequest request, Model model, @ModelAttribute("userModel") UserModel userModel, @RequestParam(value = "referralId")Integer referralId) {
+		System.out.println("referralId : "+referralId);
+		session = request.getSession();
+		
+		session.setAttribute("referralId", referralId);
+		
+		model.addAttribute("userModel", userModel);
+		
+		return "signup";
 	}
 
 	@PostMapping(value = "/sign-up")
@@ -101,6 +125,28 @@ public class UserController {
 			@ModelAttribute("userModel") UserModel userModel) {
 
 		session = request.getSession();
+		
+		
+		
+		Integer referralId = null;
+		referralId = (Integer)session.getAttribute("referralId");
+		session.setAttribute("referralId", null);
+		if (referralId != null) {
+			System.out.println("sign-up : referralId : "+referralId);
+			String mobile = userModel.getMobile();
+			ResultWrapper<ConnectModel> connectStatus = connectService.updateInvitedUserStatus(referralId, mobile);
+			System.out.println("connectStatus : "+connectStatus.getStatus());
+			if (connectStatus.equals(Result.SUCCESS)) {
+				System.out.println("updating point/level of inviting user : ..");
+				ResultWrapper<UserModel> userStatus = userService.updatePointOrLevelOfUser(referralId);
+				System.out.println(userStatus.getMessage());
+				System.out.println("Inviting User's level/points updated");
+			}
+		} else {
+			System.out.println("not a referred sign-up");
+		}
+		
+		
 
 		session.setAttribute("redirectSuccess", "login");
 		session.setAttribute("redirectError", "login");
@@ -115,6 +161,8 @@ public class UserController {
 		else
 			return "redirect:/login";
 	}
+	
+	
 
 	@PostMapping(value = "/sign-up/isRegistered", params = "mobile")
 	public ResponseEntity<?> checkIfRegistered(HttpServletRequest request, @RequestParam String mobile) {
