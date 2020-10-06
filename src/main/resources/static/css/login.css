@@ -28,34 +28,18 @@ a.forgot-password {
 	text-indent: 8%;
 }
 
-.user {
-	background-image: url('/icons/user1.jpg');
-	background-repeat: no-repeat;
-	background-size: 5%;
-	background-position: 1.5% 50%;
-}
-
-.password {
-	background-image: url('/icons/key1.png');
-	background-repeat: no-repeat;
-	background-size: 5%;
-	background-position: 2% 50%;
-}
-
 .btn {
 	background-color: #444749;
 	border-radius: 4px;
 }
 
-.new-user {
-	position: absolute;
-	top: 60%;
-	color: white;
-	margin-top: 77px;
-}
-
-.sign-up {
-	color: rgb(0, 140, 255);
+.position-absolute.new-user {
+    top: 52px;
+    transform: translate(50px , -16px);
+    left: 0;
+	color: #fff;
+	width: 100%;
+	text-align: left;
 }
 
 /* my css */
@@ -82,4 +66,8 @@ input[type="checkbox"]{
     width: 50%;
     margin: 0 auto;
     display: contents;
+}
+
+.w-10{
+	width : 10%;
 }

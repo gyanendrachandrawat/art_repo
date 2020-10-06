@@ -121,6 +121,8 @@ function validateFormOnClick() {
 	 * checks for name
 	 */
 	if ($("#name").val() == '') {
+		$('#name').get(0).setCustomValidity('Please fill out this field');
+
 		$("#nameValidation").text("this field cannot be empty");
 		return 1;
 	} else
@@ -133,13 +135,16 @@ function validateFormOnClick() {
 		url : "/sign-up/isRegistered?mobile=" + $("#mobile").val(),
 		success : function(data) {
 			if (data == "yes") {
+				$('#mobile').get(0).setCustomValidity('Mobile already registered');
 				$("#mobileValidation").text("mobile already registered");
 				valid = 1;
 			} else {
 				if ($("#mobile").val() == '') {
+					$('#name').get(0).setCustomValidity('Please fill out this field');
 					$("#mobileValidation").text("this field cannot be empty");
 					valid = 1;
 				} else if ($("#mobile").val().length != 10) {
+					$('#name').get(0).setCustomValidity('not a valid number');
 					$("#mobileValidation").text("not a valid number");
 					valid = 1;
 				} else
@@ -162,6 +167,8 @@ function validateFormOnClick() {
 	 * checks for dob
 	 */
 	if ($("#dob").val() == '') {
+		$('#dob').get(0).setCustomValidity('Please fill out this field');
+
 		$("#dobValidation").text("this field cannot be empty");
 		valid = 1;
 	} else
@@ -170,6 +177,8 @@ function validateFormOnClick() {
 	 * checks for zip
 	 */
 	if ($("#zip").val() == '') {
+		$('#zip').get(0).setCustomValidity('Please fill out this field');
+
 		$("#zipValidation").text("this field cannot be empty");
 		valid = 1;
 	} else
@@ -178,6 +187,8 @@ function validateFormOnClick() {
 	 * checks for password
 	 */
 	if ($("#password").val() == '') {
+		$('#password').get(0).setCustomValidity('Please fill out this field');
+
 		$("#passwordValidation").text("this field cannot be empty");
 		valid = 1;
 	} else
@@ -186,6 +197,8 @@ function validateFormOnClick() {
 	 * checks for confirm password
 	 */
 	if ($("#confirmPassword").val() === '') {
+		$('#confirmPassword').get(0).setCustomValidity('Please fill out this field');
+
 		$("#confirmPasswordValidation").text("this field cannot be empty");
 		valid = 1;
 	} else

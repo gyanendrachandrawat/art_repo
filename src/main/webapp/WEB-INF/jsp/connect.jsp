@@ -161,7 +161,7 @@
 				</form>
 			</div>
 			<div class="container float-left col-6 w-50">
-				<form:form class="was-validated" method="POST"
+				<form:form id="inviteForm" class="was-validated" method="POST"
 					modelAttribute="connectModel" action="/dashboard/connect">
 					<div class="form-group">
 						<label class="color-white" for="name">Name:</label>
@@ -191,7 +191,7 @@
 					</div>
 					<div class="form-group float-right">
 						<span></span>
-						<button type="submit"
+						<button type="submit" id="inviteBtn"
 							class="btn color-grey-lighter font-weight-bold">
 							<img src="/icons/send.png" alt="send"> Invite
 						</button>
@@ -323,7 +323,34 @@
 			inviteShow();
 			$("#connect").hide();
 			$("#pending").hide();
+
+			$("#inviteForm").submit(function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				$.ajax({
+					type : "post",
+					url : "/dashboard/checkInvite?mobile=" + $("#mobile").val(),
+					success : function(data) {
+						if (data == "registered") {
+							alert("user already registered");
+						} else if (data == "sent") {
+							alert("already sent the invitation to the user");
+						} //else if (data == "no")
+						//runOnComplete();
+						$("#inviteForm").submit();
+					},
+					error : function(e) {
+
+					}
+				});
+			});
+				
 		});
+		/* function runOnComplete() {
+
+		}
+		 */
 		function inviteShow() {
 			$(".sec").hide();
 			$("#invite").show();
@@ -359,6 +386,7 @@
 								$(data)
 										.each(
 												function(i, connectModel) {
+													mobile
 													$('#connectedbody')
 															.append(
 																	$("<tr>")

@@ -10,12 +10,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.art_project.model.ConnectModel;
 import com.art_project.model.result.Result;
 import com.art_project.model.result.ResultWrapper;
 import com.art_project.repository.ConnectRepository;
+import com.stripe.model.checkout.Session;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +28,14 @@ public class ConnectService {
 	@Autowired
 	private ConnectRepository connectRepository;
 
-	@Autowired
-	private UserService userService;
+	private ResultWrapper<ConnectModel> result;
 
-	private ResultWrapper<ConnectModel> result = new ResultWrapper<ConnectModel>();
+	HttpSession session;
 
 	public ResultWrapper<ConnectModel> saveConnect(ConnectModel connectModel) {
+
+		result = new ResultWrapper<ConnectModel>();
+
 		try {
 //			connectModel.setUserModel(userService.getUserModel());
 			connectModel.setDateInvite(new java.sql.Date(System.currentTimeMillis()));
@@ -45,6 +49,10 @@ public class ConnectService {
 			result.setMessage("failed to save connect, exception: " + e);
 			return result;
 		}
+	}
+
+	protected ConnectModel getInvite(String mobile, int id) {
+		return connectRepository.getInvite(mobile, id);
 	}
 
 	public Map<Integer, Integer> getInviteList(String mobile) {

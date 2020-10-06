@@ -32,6 +32,7 @@ import com.art_project.security.JwtTokenUtil;
 import com.art_project.service.ConnectService;
 import com.art_project.service.PaymentService;
 import com.art_project.service.UserService;
+import com.art_project.service.ValidateService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +54,9 @@ public class UserController {
 
 	@Autowired
 	private ConnectService connectService;
+	
+	@Autowired
+	private ValidateService validateService;
 
 	private ResultWrapper<UserModel> result = new ResultWrapper<UserModel>();
 
@@ -110,20 +114,17 @@ public class UserController {
 
 			userService.setUserModel(userModel);
 			session.setAttribute("valid", "yes");
+			session.setAttribute("userId", userModel.getId());
+			Cookie cookie = new Cookie("Authorization", "Bearer-" + token);
+			response.addCookie(cookie);
 
 			if (paymentDone.equals("yes")) {
-				session.setAttribute("userId", userModel.getId());
 				model.addAttribute("usersname", userModel.getName());
-
-				Cookie cookie = new Cookie("Authorization", "Bearer-" + token);
 				System.out.println(" token: " + token);
-				response.addCookie(cookie);
 				return "redirect:/dashboard";
 			} else {
-				session.setAttribute("userId", userModel.getId());
 				session.setAttribute("redirectSuccess", "dashboard");
 				session.setAttribute("redirectError", "pay");
-				System.out.println("user id: " + userModel.getId());
 				return "redirect:/pay";
 			}
 		} else {
@@ -199,7 +200,7 @@ public class UserController {
 		// System.out.println(
 		// "got the status as user registered: " + userService.checkIfRegistered(mobile)
 		// + ", number: " + mobile);
-		return new ResponseEntity<>(userService.checkIfRegistered(mobile), HttpStatus.OK);
+		return new ResponseEntity<>(validateService.checkIfRegistered(mobile), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/dashboard")

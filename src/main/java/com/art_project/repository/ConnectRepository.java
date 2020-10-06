@@ -16,6 +16,9 @@ public interface ConnectRepository extends JpaRepository<ConnectModel, Integer> 
 	
 	List<ConnectModel> findByMobile(String mobile);
 	
+	@Query(value="select * from connect where mobile = :mobile and userId = :id ", nativeQuery = true)
+	ConnectModel getInvite(String mobile, int id);
+	
 	@Modifying
 	@Query(value = "update connect set status = ? where id = ?", nativeQuery = true)
 	int updateStatusById(String status, int id);

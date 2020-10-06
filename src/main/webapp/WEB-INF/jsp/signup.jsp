@@ -36,10 +36,9 @@
 <!-- Bootstrap Multiselect JS -->
 <script data-main="dist/js/" src="js/require.min.js"></script>
 
-<link rel="stylesheet" href="/css/signup.css">
+<link rel="stylesheet" href="css/signup.css">
 
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/sign-up.js"></script>
+<script type="text/javascript" src="js/signup.js"></script>
 </head>
 
 <body>
@@ -47,86 +46,119 @@
 		<div class="row justify-content-center align-items-center">
 			<form:form
 				class="form-container col-xl-4 col-lg-6 col-md-8 col-sm-12 col-12"
-				method="POST" modelAttribute="userModel" action="sign-up" id="registrationForm">
+				method="POST" modelAttribute="userModel" action="sign-up"
+				id="registrationForm">
 				<div id="signupForm" class="step">
 					<div class="form-group">
-						<form:input class="form-control user" id="name" path="name"
-							placeholder="User Name" />
-						<p class="form-group float-left" id="nameValidation"></p>
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/user.png"></span>
+						<form:input class="form-control user w-100 mx-auto" id="name"
+							path="name" placeholder="User Name" required="true"/>
+						<span id="nameValidation"></sapn>
 					</div>
 
 					<div class="form-group">
-						<form:input class="form-control user" id="mobile" path="mobile"
-							placeholder="123-456-7890" />
-						<p class="form-group float-left" id="mobileValidation"></p>
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/user.png"></span>
+						<form:input class="form-control user w-100 mx-auto" id="mobile"
+							path="mobile" placeholder="123-456-7890" required="true"/>
+						<span id="mobileValidation"></span>
 					</div>
 
 					<div class="form-group">
-						<form:input class="form-control user" id="dob" path="dob"
-							placeholder="Date of Birth" />
-						<p class="form-group float-left" id="dobValidation"></p>
-
-					</div>
-
-					<div class="form-group">
-						<form:input class="form-control user" id="zip" path="zip"
-							placeholder="Zip Code" />
-						<p class="form-group float-left" id="zipValidation"></p>
-
-					</div>
-
-					<div class="form-group">
-						<form:password class="form-control password" id="password"
-							path="password" placeholder="Password" />
-						<p class="form-group float-left" id="passwordValidation"></p>
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/clock-black.png"></span>
+						<form:input class="form-control user w-100 mx-auto" id="dob"
+							path="dob" placeholder="Date of Birth" required="true"/>
+						<span id="dobValidation"></span>
 
 					</div>
 
 					<div class="form-group">
-						<input type="password" class="form-control user"
-							id="confirmPassword" placeholder="Confirm Password" />
-						<p class="form-group float-left" id="confirmPasswordValidation"></p>
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/envelope-black.png"></span>
+						<form:input class="form-control user w-100 mx-auto" id="zip"
+							path="zip" placeholder="Zip Code" required="true"/>
+						<span id="zipValidation"></span>
+
 					</div>
 
-					<div class="form-group form-check float-left">
-						<input type="checkbox" class="form-check-input "
+					<div class="form-group">
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/lock.png"></span>
+						<form:password class="form-control password w-100 mx-auto"
+							id="password" path="password" placeholder="Password" required="true"/>
+						<span id="passwordValidation"></span>
+
+					</div>
+
+					<div class="form-group">
+						<span class="position-absolute all-img-icon"><img
+							src="/icons/lock.png"></span> <input type="password"
+							class="form-control user w-100 mx-auto" id="confirmPassword"
+							placeholder="Confirm Password" required/>
+						<span id="confirmPasswordValidation"></span>
+					</div>
+
+					<div class="form-group form-check float-left d-inline-block">
+						<input type="checkbox" class="form-check-input mt-2"
 							id="privacy-policy"> <small> <label
-							class="form-check-label" for="privacy-policy">I agree
-								with</label> <a href=# class="privacy-policy">Privacy Policy</a>
+							class="form-check-label mt-1" for="privacy-policy">I
+								agree with </label> <a href=# class="privacy-policy">Privacy Policy</a>
 						</small>
 					</div>
 
 					<div class="form-group">
-						<p class="form-group float-left" id="privacyValidation"></p>
+						<p class="form-group float-left w-100" id="privacyValidation"></p>
 					</div>
 
 					<div class="form-group">
-						<button type="button" id="signupBtn" class="btn btn-dark">Sign
-							up</button>
+						<button type="button" id="signupBtn"
+							class="btn btn-dark text-center mt-2 w-25">Sign up</button>
+					</div>
+					<div class="w-50 mx-auto my-auto text-center position-relative">
+						<small class="position-absolute exist-user">Existing User?
+							<a href="/" class="">Login </a>
+						</small>
 					</div>
 				</div>
 
 				<div id="soicalMediaAccountsForm" class="step">
 					<fieldset>
-						<div class="form-group">
-							<p class="form-control user question">What social Media
-								accounts do you have?</p>
-						</div>
 
 						<div class="form-group">
-							Facebook
-							<form:checkbox path="soicalMediaAccounts"
-								class="soicalMediaAccounts" value="Facebook" />
-							<br> <br> Twitter
-							<form:checkbox path="soicalMediaAccounts"
-								class="soicalMediaAccounts" value="Twitter" />
-							<br> <br> Instagram
-							<form:checkbox path="soicalMediaAccounts"
-								class="soicalMediaAccounts" value="Instagram" />
-							<br> <br> Snapchat
-							<form:checkbox path="soicalMediaAccounts"
-								class="soicalMediaAccounts" value="Snapchat" />
-							<br> <br>
+							<div class="ques-option">
+								<span><img class="mb-2" src="/icons/information.png"
+									alt="info"></span>
+								<p class="form-control question">What social Media accounts
+									do you have?</p>
+							</div>
+							<div class="option">
+								<!-- <checkbox path="soicalMediaAccounts" class="soicalMediaAccounts" value="Facebook" />
+                  <p class="opt">Facebook</p>
+                <checkbox path="soicalMediaAccounts" class="soicalMediaAccounts" value="Twitter" />
+                  <p class="opt">Twitter</p>
+                <checkbox path="soicalMediaAccounts" class="soicalMediaAccounts" value="Instagram" />
+                  <p class="opt">Instagram</p>
+                <checkbox path="soicalMediaAccounts" class="soicalMediaAccounts" value="Snapchat" />
+                  <p class="opt">Snapchat</p> -->
+								<label class="opt">Facebook <form:checkbox
+										path="soicalMediaAccounts" class="soicalMediaAccounts"
+										value="Facebook" /> <span class="checkmark"></span>
+								</label> <label class="opt">Instagram <form:checkbox
+										path="soicalMediaAccounts" class="soicalMediaAccounts"
+										value="Instagram" /> <span class="checkmark"></span>
+								</label> <label class="opt">Twitter <form:checkbox
+										path="soicalMediaAccounts" class="soicalMediaAccounts"
+										value="Twitter" /> <span class="checkmark"></span>
+								</label> <label class="opt">Snapchat <form:checkbox
+										path="soicalMediaAccounts" class="soicalMediaAccounts"
+										value="Snapchat" /> <span class="checkmark"></span>
+								</label> <label class="opt">Gmail <form:checkbox
+										path="soicalMediaAccounts" class="soicalMediaAccounts"
+										value="Gmail" /><span class="checkmark"></span>
+								</label>
+							</div>
 						</div>
 
 						<div class="form-group">
@@ -144,12 +176,19 @@
 
 				<div id="hrsOnlineForm" class="step">
 					<fieldset>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<p class="form-control user question">How many hours per day
 								do you spend online?</p>
-						</div>
+						</div> -->
 						<div class="form-group">
-							<form:input path="hrsOnline" value="1" id="hrsOnline" maxlength="2" size="2"/>
+							<div class="ques-option mb-3">
+								<span><img class="mb-2" src="/icons/information.png"
+									alt="info"></span>
+								<p class="form-control question">How many hours per day do
+									you spend online?</p>
+							</div>
+							<form:input class="hr-spend" path="hrsOnline" value="1"
+								id="hrsOnline" maxlength="2" size="2" />
 						</div>
 
 						<div class="form-group">
@@ -163,18 +202,37 @@
 
 				<div id="onlineForForm" class="step">
 					<fieldset>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<p class="form-control user question">Are you mainly online
 								for business or leisure?</p>
-						</div>
+						</div> -->
 
 						<div class="form-group">
-							Business :
-							<form:radiobutton path="onlineFor" class="onlineFor"
-								value="Business" />
-							<br> <br> Leisure :
-							<form:radiobutton path="onlineFor" class="onlineFor"
-								value="Leisure" checked="checked" />
+							<div class="ques-option mb-3">
+								<span><img class="mb-2" src="/icons/information.png"
+									alt="info"></span>
+								<p class="form-control question">Are you mainly online for
+									business or leisure?</p>
+							</div>
+
+							<!-- <radiobutton path="onlineFor" class="onlineFor" value="Business" />
+              <p class="opt bg-white">Business</p> -->
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input onlineFor"
+										name="optradio" path="onlineFor" value="Business" /> Business
+								</label>
+							</div>
+
+							<!-- <radiobutton type="radio" path="onlineFor" class="onlineFor" value="Leisure" checked="checked" />
+              <p class="opt bg-white">Leisure</p> -->
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input onlineFor"
+										name="optradio" path="onlineFor" value="Leisure" checked="true"/> Leisure
+								</label>
+							</div>
+
 						</div>
 
 						<div class="form-group">
@@ -192,16 +250,38 @@
 
 				<div id="isBusinessInternetBasedForm" class="step">
 					<fieldset>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<p class="form-control user question">Is your business solely
 								Internet based?</p>
-						</div>
+						</div> -->
 						<div class="form-group">
-							Yes:
-							<form:radiobutton path="isBusinessInternetBased" value="Yes" />
+							<div class="ques-option mb-3">
+								<span><img class="mb-2" src="/icons/information.png"
+									alt="info"></span>
+								<p class="form-control question">Is your business solely
+									Internet based?</p>
+							</div>
+
+							<!-- Yes:
+							<radiobutton path="isBusinessInternetBased" value="Yes" />
 							<br> <br> No:
-							<form:radiobutton path="isBusinessInternetBased" value="No"
-								checked="checked" />
+              <radiobutton path="isBusinessInternetBased" value="No" checked="checked" /> -->
+
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input"
+										name="optradio" path="isBusinessInternetBased" value="Yes" />
+									Yes
+								</label>
+							</div>
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input"
+										name="optradio" path="isBusinessInternetBased" value="No"
+										checked="checked" /> No
+								</label>
+							</div>
+
 						</div>
 						<div class="form-group">
 							<button type="button" id="backBtn4"
@@ -214,16 +294,39 @@
 
 				<div id="isInternetInfluencerForm" class="step">
 					<fieldset>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<p class="form-control user question">Are you Internet
 								influencer?</p>
-						</div>
+            </div> -->
+
+
 						<div class="form-group">
-							Yes:
-							<form:radiobutton path="isInternetInfluencer" value="Yes" />
+							<div class="ques-option mb-3">
+								<span><img class="mb-2" src="/icons/information.png"
+									alt="info"></span>
+								<p class="form-control question">Are you Internet
+									influencer?</p>
+							</div>
+
+							<!-- Yes:
+							<radiobutton path="isInternetInfluencer" value="Yes" />
 							<br> <br> No:
-							<form:radiobutton path="isInternetInfluencer" value="No"
-								checked="checked" />
+              <radiobutton path="isInternetInfluencer" value="No" checked="checked" /> -->
+
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input"
+										name="optradio" path="isInternetInfluencer" value="Yes" /> Yes
+								</label>
+							</div>
+							<div class="form-check d-flex">
+								<label class="form-check-label bg-white p-1 mb-2 border">
+									<form:radiobutton class="form-check-input"
+										name="optradio" path="isInternetInfluencer" value="No"
+										checked="checked" /> No
+								</label>
+							</div>
+
 						</div>
 						<div class="form-group">
 							<button type="button" id="backBtn5"
@@ -234,7 +337,15 @@
 					</fieldset>
 				</div>
 			</form:form>
+
 		</div>
+		<!-- <div class="w-50 mx-auto my-auto text-center position-relative">
+			<small class="position-absolute exist-user">Existing User?
+				<a href="#" class="">Login </a>
+			</small>
+		</div> -->
 	</div>
+
 </body>
+
 </html>

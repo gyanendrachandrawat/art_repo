@@ -95,16 +95,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	/*
-	 * method to check if a user is registered
-	 */
-	public String checkIfRegistered(String mobile) {
-		if (userRepository.findByMobile(mobile) != null)
-			return "yes";
-		return "no";
-	}
-
-	/*
-	 * •••••method to get user details from unique username ( mobile in this case )
+	 * method to get user details from unique username ( mobile in this case )
 	 */
 	public UserDetails loadUserByUsername(String mobile) {
 		UserModel user = userRepository.findByMobile(mobile);

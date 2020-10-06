@@ -1,0 +1,12 @@
+.main-background  {
+    background-color: #07111d;
+}
+
+.pay-background {
+    background-color: #b3b3b3;
+    border: 1px solid #b3b3b3;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 50px;
+    width: 53%;
+}

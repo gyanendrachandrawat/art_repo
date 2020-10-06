@@ -30,9 +30,10 @@
 				<div class="form-group">
 					<span class="position-absolute user-position"><img
 						src="icons/user.png"></span>
-					<form:input path="mobile"
+					<form:input path="mobile" id="mobile"
 						class="form-control user w-100 mx-auto rounded-0 pl-4"
 						placeholder="Mobile" />
+					<div id="mobileValid"></div>
 				</div>
 
 				<div class="form-group">
@@ -40,28 +41,50 @@
 						src="icons/lock.png"></span>
 					<form:password path="password"
 						class="form-control password w-100 mx-auto rounded-0 pl-4"
-						placeholder="Password" />
+						placeholder="Password" required="true" />
 				</div>
 
 				<div class="form-group form-check">
 					<input type="checkbox" class="form-check-input" id="remember_me">
 
-					<small> <label class="form-check-label color-white ml-2 mt-2" for="remember-me">Remember
+					<small> <label
+						class="form-check-label color-white ml-2 mt-2" for="remember-me">Remember
 							Me</label> <a href=# class="forgot-password float-right ml-2 mt-2">Forgot
 							Password?</a>
 					</small>
 				</div>
 
 				<div class="submit-btn text-center">
-					<input type="submit" value="Submit" class="btn btn-dark" />
+					<input id="login" type="submit" value="Submit" class="btn btn-dark" />
+				</div>
+
+				<div class="w-50 mx-auto my-auto text-center position-relative">
+					<small class="position-absolute new-user">New to product? <a
+						href="/sign-up">Sign Up </a>
+					</small>
 				</div>
 			</form:form>
 		</div>
-		<div class="w-10 mx-auto my-auto ">
-			<small class="new-user"> New to product? <a href="sign-up"
-				class="sign-up">Sign Up </a>
-			</small>
-		</div>
 	</div>
 </body>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+
+						$("#login")
+								.click(
+										function(e) {
+											e.preventDefault();
+											e.stopPropagation();
+											//alert("clicked me..");
+											$("#mobileValid")
+													.html(
+															"<span id="msg">Good to see that working</span>");
+										});
+
+						//$('#mobile').get(0).setCustomValidity('gogs rakshas');
+					});
+</script>
 </html>
