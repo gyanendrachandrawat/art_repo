@@ -1,6 +1,7 @@
 package com.art_project.service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,14 +11,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.art_project.model.ConnectModel;
 import com.art_project.model.result.Result;
 import com.art_project.model.result.ResultWrapper;
 import com.art_project.repository.ConnectRepository;
-import com.stripe.model.checkout.Session;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +26,9 @@ public class ConnectService {
 
 	@Autowired
 	private ConnectRepository connectRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	private ResultWrapper<ConnectModel> result;
 
@@ -84,22 +86,65 @@ public class ConnectService {
 
 	public ArrayList<ConnectModel> getInviteData(Integer userId, String status) {
 		ArrayList<ConnectModel> resultInviteList = connectRepository.findConnectsByUserIdAndStatus(userId, status);
-//		ArrayList<ConnectModel> resultInviteList = (ArrayList<ConnectModel>)connectRepository.findAll();
 		return resultInviteList;
 	}
-
-	public ResultWrapper<ConnectModel> updateInvitedUserStatus(Integer referralId, String mobile) {
+	
+//	public ResultWrapper<ConnectModel> updateConnectStatusForInvitedUser(Integer referredBy, String mobile) {
+//		try {
+//			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile);
+//			connectModel.setStatus("connected");
+//			connectModel.setDateConnect(Date.valueOf(LocalDate.now()));
+//			result.setResult(connectRepository.save(connectModel));
+//			result.setStatus(Result.SUCCESS);
+//			result.setMessage("status and connect date is updated");
+//		} catch (Exception e) {
+//			result.setResult(null);
+//			result.setStatus(Result.FAIL);
+//			result.setMessage("exception in updating connect status and date : "+e.toString());
+//		}
+//		return result;
+//	}
+	
+	public ResultWrapper<ConnectModel> updateConnectStatusForInvitedUser(Integer referredBy, String mobile) {
 		try {
-			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referralId, mobile);
+			ConnectModel connectModel = null;
+			try {
+				connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile);
+			} catch (Exception e) {
+				System.out.println("EXCEPTION IN : connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile)");
+			}
 			connectModel.setStatus("connected");
-			result.setResult(connectRepository.save(connectModel));
+			connectModel.setDateConnect(Date.valueOf(LocalDate.now()));
+//			result.setResult(connectRepository.save(connectModel));
+			try {
+				result.setResult(connectRepository.save(connectModel));
+			} catch (Exception e) {
+				System.out.println("EXCEPTION IN : result.setResult(connectRepository.save(connectModel));");
+			}
 			result.setStatus(Result.SUCCESS);
-			result.setMessage("invite found with given referred UserId and mobile");
-		} catch (Exception e) {
+			result.setMessage("status and connect date is updated");
+		} 
+		catch (Exception e) {
 			result.setResult(null);
 			result.setStatus(Result.FAIL);
-			result.setMessage("invite not found with given referred UserId and mobile");
+			result.setMessage("exception in updating connect status and date : "+e.toString());
 		}
 		return result;
 	}
+
+//	public ResultWrapper<ConnectModel> updateInvitedUserStatus(Integer referralId, String mobile) {
+//		try {
+//			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referralId, mobile);
+//			connectModel.setStatus("connected");
+//			result.setResult(connectRepository.save(connectModel));
+//			result.setStatus(Result.SUCCESS);
+//			result.setMessage("invite found with given referred UserId and mobile");
+//		} catch (Exception e) {
+//			result.setResult(null);
+//			result.setStatus(Result.FAIL);
+//			result.setMessage("invite not found with given referred UserId and mobile");
+//		}
+//		return result;
+//	}
+	
 }

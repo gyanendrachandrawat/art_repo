@@ -66,6 +66,9 @@ public class UserModel {
 
 	@Column
 	private String link;
+	
+	@Column
+	private Integer referredBy;
 
 	@Override
 	public String toString() {

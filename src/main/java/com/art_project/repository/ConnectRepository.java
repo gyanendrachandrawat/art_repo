@@ -32,5 +32,6 @@ public interface ConnectRepository extends JpaRepository<ConnectModel, Integer> 
 //	@Query(value = "select from connect where userId = ? and status = ?", nativeQuery = true)
 	ArrayList<ConnectModel> findConnectsByUserIdAndStatus(Integer userId, String status);
 
+//	ConnectModel findByUserIdAndMobile(Integer referralId, String mobile);
 	ConnectModel findByUserIdAndMobile(Integer referralId, String mobile);
 }

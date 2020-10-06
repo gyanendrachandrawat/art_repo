@@ -31,11 +31,11 @@ public class PaymentService {
 		try {
 			Map<String, Object> chargeParams = new HashMap<>();
 			
-			chargeParams.put("amount", 50);
+			chargeParams.put("amount", 50*100);
 			
 			chargeParams.put("currency", Currency.USD);
 			
-			chargeParams.put("description", "test payment from js form");
+			chargeParams.put("description", "test payment from art project");
 			
 			chargeParams.put("source", stripeToken);
 			

@@ -324,7 +324,7 @@
 			$("#connect").hide();
 			$("#pending").hide();
 
-			$("#inviteForm").submit(function(e) {
+/* 			$("#inviteForm").submit(function(e) {
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -344,7 +344,8 @@
 
 					}
 				});
-			});
+			}
+			); */
 				
 		});
 		/* function runOnComplete() {

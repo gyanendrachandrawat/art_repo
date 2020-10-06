@@ -50,7 +50,9 @@ public class ConnectController {
 		connectModel.setStatus("pending");
 
 		HttpSession session = request.getSession();
-		connectModel.setUserId((Integer) session.getAttribute("userId"));
+//		connectModel.setUserId((Integer) session.getAttribute("userId"));
+		Integer userId = (Integer)session.getAttribute("userId");
+		connectModel.setUserId(userId);
 
 		System.out.println("connectModel : " + connectModel);
 
@@ -60,6 +62,9 @@ public class ConnectController {
 //		HttpSession session = request.getSession();
 
 		System.out.println("connect user id: " + session.getAttribute("userId"));
+		
+		String inviteLink = "localhost:8080/referral?referralId="+userId;
+		model.addAttribute("link", inviteLink);
 
 		// request.setAttribute("registerStatus", "REGISTERED SUCCESSFULLY.");
 		model.addAttribute(connectModel);
@@ -70,12 +75,12 @@ public class ConnectController {
 	/*
 	 * check if user already invited or registered.
 	 */
-	@PostMapping(value = "/checkInvite")
-	public ResponseEntity<?> checkInvite(HttpServletRequest request, @RequestParam String mobile) {
-
-		System.out.println("\n\n******************sadf akjb jha g******************\n\n");
-		return new ResponseEntity<>(validateService.checkInvite(mobile, (int) request.getSession().getAttribute("userId")),HttpStatus.OK);
-	}
+//	@PostMapping(value = "/checkInvite")
+//	public ResponseEntity<?> checkInvite(HttpServletRequest request, @RequestParam String mobile) {
+//
+//		System.out.println("\n\n******************sadf akjb jha g******************\n\n");
+//		return new ResponseEntity<>(validateService.checkInvite(mobile, (int) request.getSession().getAttribute("userId")),HttpStatus.OK);
+//	}
 
 //	temporary inviteLink
 //	http://localhost:8080/referral?referralId=9

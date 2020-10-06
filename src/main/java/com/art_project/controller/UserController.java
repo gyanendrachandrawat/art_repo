@@ -125,6 +125,10 @@ public class UserController {
 			} else {
 				session.setAttribute("redirectSuccess", "dashboard");
 				session.setAttribute("redirectError", "pay");
+				
+				// to identify type of payment in payment controller during payment processing.
+				session.setAttribute("paymentType", "signUp");
+				
 				return "redirect:/pay";
 			}
 		} else {
@@ -162,23 +166,15 @@ public class UserController {
 			@ModelAttribute("userModel") UserModel userModel) {
 
 		session = request.getSession();
-
 		Integer referralId = null;
 		referralId = (Integer) session.getAttribute("referralId");
-		session.setAttribute("referralId", null);
+//		session.setAttribute("referralId", null);
 		if (referralId != null) {
-			System.out.println("sign-up : referralId : " + referralId);
-			String mobile = userModel.getMobile();
-			ResultWrapper<ConnectModel> connectStatus = connectService.updateInvitedUserStatus(referralId, mobile);
-			System.out.println("connectStatus : " + connectStatus.getStatus());
-			if (connectStatus.equals(Result.SUCCESS)) {
-				System.out.println("updating point/level of inviting user : ..");
-				ResultWrapper<UserModel> userStatus = userService.updatePointOrLevelOfUser(referralId);
-				System.out.println(userStatus.getMessage());
-				System.out.println("Inviting User's level/points updated");
-			}
+			System.out.println("referred sign-up : referralId : " + referralId+" mobileNumber : "+userModel.getMobile());
+			userModel.setReferredBy(referralId);
 		} else {
 			System.out.println("not a referred sign-up");
+			userModel.setReferredBy(null);
 		}
 
 		session.setAttribute("redirectSuccess", "login");
@@ -188,6 +184,11 @@ public class UserController {
 		if (result.getResult() != null) {
 			model.addAttribute(userModel);
 			session.setAttribute("userId", userModel.getId());
+			
+			// to identify type of payment in payment controller during payment processing.
+			session.setAttribute("paymentType", "signUp");
+//			session.setAttribute("referralId", referralId);
+			
 			return "redirect:/pay";
 		}
 

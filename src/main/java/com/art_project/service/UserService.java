@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.art_project.model.ConnectModel;
 import com.art_project.model.UserModel;
 import com.art_project.model.result.Result;
 import com.art_project.model.result.ResultWrapper;
@@ -93,6 +94,15 @@ public class UserService implements UserDetailsService {
 	public UserModel findOne(String mobile) {
 		return userRepository.findByMobile(mobile);
 	}
+	
+	/*
+	 * method to check if a user is registered
+	 */
+	public String checkIfRegistered(String mobile) {
+		if (userRepository.findByMobile(mobile) != null)
+			return "yes";
+		return "no";
+	}
 
 	/*
 	 * method to get user details from unique username ( mobile in this case )
@@ -164,31 +174,64 @@ public class UserService implements UserDetailsService {
 	public UserModel getUserModel() {
 		return userModel;
 	}
-
-	public ResultWrapper<UserModel> updatePointOrLevelOfUser(Integer referralId) {
-		UserModel userModel = userRepository.findById(referralId).orElse(null);
-		if (userModel == null) {
-			result.setResult(null);
-			result.setStatus(Result.FAIL);
-			result.setMessage("user with referred userId not found");
-		} else {
-			Integer points = userModel.getPoints();
-			if (points/50 == 0) {
-				Integer level = userModel.getLevel();
-				level = level + 1;
-				points = points + 1;
-				userModel.setLevel(level);
-				userModel.setPoints(points);
-			} else {
-				points = points + 1;
-				userModel.setPoints(points);
-			}
-			result.setResult(userRepository.save(userModel));
-			result.setStatus(Result.SUCCESS);
-			result.setMessage("user updated successfully on referral registration");
-		}
-		return result;
+	
+	public UserModel getUserModelById(int id) {
+		return userRepository.getOne(id);
 	}
+	
+	public ResultWrapper<Object> updateUserPointLevelAndConnectStatus(UserModel userModel) {
+		
+		Integer referredBy = userModel.getReferredBy();
+		String mobile = userModel.getMobile();
+		
+		System.out.println("UserService - referredBy : "+referredBy+", mobile : "+mobile);
+		
+//		ResultWrapper<ConnectModel> connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile);
+		ResultWrapper<ConnectModel> connectModelUpdateResult = null;
+		try {
+			connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile);
+		} catch (Exception e) {
+			System.out.println("EXCEPTION IN : connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile)");
+		}
+		if (connectModelUpdateResult.getResult() != null) {
+			System.out.println("updating point and level of inviting user : ");
+			this.updateUserPointLevel(referredBy);
+		}
+		
+		return null;
+	}
+
+	private void updateUserPointLevel(Integer referredBy) {
+		userRepository.updatePointsByUserId(referredBy);
+		if (userRepository.getOne(referredBy).getPoints() % 50 ==0) {
+			userRepository.updateLevelByUserId(referredBy);
+		}
+	}
+
+//	public ResultWrapper<UserModel> updatePointOrLevelOfUser(Integer referralId) {
+//		UserModel userModel = userRepository.findById(referralId).orElse(null);
+//		if (userModel == null) {
+//			result.setResult(null);
+//			result.setStatus(Result.FAIL);
+//			result.setMessage("user with referred userId not found");
+//		} else {
+//			Integer points = userModel.getPoints();
+//			if (points/50 == 0) {
+//				Integer level = userModel.getLevel();
+//				level = level + 1;
+//				points = points + 1;
+//				userModel.setLevel(level);
+//				userModel.setPoints(points);
+//			} else {
+//				points = points + 1;
+//				userModel.setPoints(points);
+//			}
+//			result.setResult(userRepository.save(userModel));
+//			result.setStatus(Result.SUCCESS);
+//			result.setMessage("user updated successfully on referral registration");
+//		}
+//		return result;
+//	}
 	
 	
 }

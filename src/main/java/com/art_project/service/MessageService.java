@@ -10,7 +10,7 @@ import com.twilio.type.PhoneNumber;
 
 @Service
 public class MessageService {
-	
+
 	@Value("${twilio.account_sid}")
 	private String twilio_sid;
 
@@ -19,22 +19,32 @@ public class MessageService {
 
 	@Value("${twilio.trial_number}")
 	private String twilio_trial_number;
-	
+
 	public Message sendMessage(UserModel signupModel) {
-		Twilio.init(twilio_sid, twilio_auth_token);
+		try {
+			Twilio.init(twilio_sid, twilio_auth_token);
 
-		Message message = Message.creator(new PhoneNumber(signupModel.getMobile()), new PhoneNumber(twilio_trial_number),"Congratulations.. You are succesfully signed up.").create();
-		System.out.println("message sent");
-		return message;
+			Message message = Message.creator(new PhoneNumber(signupModel.getMobile()),
+					new PhoneNumber(twilio_trial_number), "Congratulations.. You are succesfully signed up.").create();
+			System.out.println("message sent");
+			return message;
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
+
 	public Message sendMessage(String mobile) {
-		Twilio.init(twilio_sid, twilio_auth_token);
+		try {
+			Twilio.init(twilio_sid, twilio_auth_token);
 
-		Message message = Message.creator(new PhoneNumber(mobile), new PhoneNumber(twilio_trial_number),"This is a test message.").create();
-		System.out.println("message sent");
-		return message;
+			Message message = Message
+					.creator(new PhoneNumber(mobile), new PhoneNumber(twilio_trial_number), "This is a test message.")
+					.create();
+			System.out.println("message sent");
+			return message;
+		} catch (Exception e) {
+			return null;
+		}
 	}
-
 
 }
