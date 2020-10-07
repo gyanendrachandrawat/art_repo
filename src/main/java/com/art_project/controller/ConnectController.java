@@ -57,6 +57,8 @@ public class ConnectController {
 		System.out.println("connectModel : " + connectModel);
 
 		result = connectService.saveConnect(connectModel);
+		
+		session.setAttribute("inviteSubmitResponse", result.getMessage());
 
 		// new MessageService().sendMessage(connectModel.getMobile());
 //		HttpSession session = request.getSession();
@@ -91,6 +93,10 @@ public class ConnectController {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute("userId");
 //		String inviteLink = "http://localhost:8080/referral?referralId="+userId;
+		System.out.println("userId : "+userId);
+		
+		session.setAttribute("inviteSubmitResponse", null);
+		
 		String inviteLink = "localhost:8080/referral?referralId=" + userId;
 		System.out.println("inviteLink : " + inviteLink);
 		model.addAttribute("link", inviteLink);
@@ -117,36 +123,36 @@ public class ConnectController {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute("userId");
 
-		ArrayList<ConnectModel> resultConnectList = new ArrayList<>();
+		ArrayList<ConnectModel> resultConnectList = connectService.getInviteData(userId, status);
 
 //		For testing only if the list is Empty or getting NullPointerException
-		try {
-			resultConnectList = connectService.getInviteData(userId, status);
-		} catch (NullPointerException e) {
-			ConnectModel catchModel = new ConnectModel();
-			catchModel.setName("name1");
-			catchModel.setMobile("1111111111");
-			catchModel.setStatus(status);
-			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
-
-			resultConnectList.add(catchModel);
-
-		}
-
-		if (resultConnectList.isEmpty()) {
-			ConnectModel catchModel = new ConnectModel();
-			catchModel.setName("name1");
-			catchModel.setMobile("1111111111");
-			catchModel.setStatus(status);
-			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
-
-			resultConnectList.add(catchModel);
-		}
+//		try {
+//			resultConnectList = connectService.getInviteData(userId, status);
+//		} catch (NullPointerException e) {
+//			ConnectModel catchModel = new ConnectModel();
+//			catchModel.setName("name1");
+//			catchModel.setMobile("1111111111");
+//			catchModel.setStatus(status);
+//			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
+//
+//			resultConnectList.add(catchModel);
+//
+//		}
+//
+//		if (resultConnectList.isEmpty()) {
+//			ConnectModel catchModel = new ConnectModel();
+//			catchModel.setName("name1");
+//			catchModel.setMobile("1111111111");
+//			catchModel.setStatus(status);
+//			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
+//
+//			resultConnectList.add(catchModel);
+//		}
 
 		for (ConnectModel resultModel : resultConnectList) {
 			System.out.println(resultModel);
 		}
-		System.out.println("sent data");
+		System.out.println(status+" data sent for user "+userId);
 		return new ResponseEntity<>(resultConnectList, HttpStatus.OK);
 
 	}

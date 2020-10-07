@@ -179,32 +179,50 @@ public class UserService implements UserDetailsService {
 		return userRepository.getOne(id);
 	}
 	
-	public ResultWrapper<Object> updateUserPointLevelAndConnectStatus(UserModel userModel) {
+	public String updateUserPointLevelAndConnectStatus(UserModel userModel) {
 		
 		Integer referredBy = userModel.getReferredBy();
 		String mobile = userModel.getMobile();
 		
-		System.out.println("UserService - referredBy : "+referredBy+", mobile : "+mobile);
+		System.out.println("UserService updating status, date and point, level - referredBy : "+referredBy+", mobile : "+mobile);
 		
-//		ResultWrapper<ConnectModel> connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile);
-		ResultWrapper<ConnectModel> connectModelUpdateResult = null;
-		try {
-			connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile);
-		} catch (Exception e) {
-			System.out.println("EXCEPTION IN : connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile)");
+		// Updating invited user's connectStatus and connectDate.
+		String connectModelUpdateResult = connectService.updateConnectStatusForInvitedUser(referredBy, mobile);
+		
+		// updating inviting user's point and level.
+		String userModelUpdateResult = this.updateUserPointLevel(referredBy);
+		
+		if (connectModelUpdateResult.equalsIgnoreCase("success")) {
+			System.out.println("SUCCESS : connectStatus, connectDate updated successfully");
+		} else {
+			System.out.println("FAIL : connectStatus, connectDate update failed : "+connectModelUpdateResult);
 		}
-		if (connectModelUpdateResult.getResult() != null) {
-			System.out.println("updating point and level of inviting user : ");
-			this.updateUserPointLevel(referredBy);
+		if (userModelUpdateResult.equalsIgnoreCase("success")) {
+			System.out.println("SUCCESS : user point, level updated successfully");
+		} else {
+			System.out.println("FAIL : user point, level update failed : "+userModelUpdateResult);
 		}
 		
-		return null;
+		if (connectModelUpdateResult.equalsIgnoreCase("success") && userModelUpdateResult.equalsIgnoreCase("success")) {
+			System.out.println("FINAL RESULT - connectStatus, connetcDate, point, level updated SUCCESSFULLY");
+			return "success";
+		} else {
+			System.out.println("connectModelUpdateResult : "+connectModelUpdateResult);
+			System.out.println("userModelUpdateResult : "+userModelUpdateResult);
+			return "fail";
+		}
+		
 	}
 
-	private void updateUserPointLevel(Integer referredBy) {
-		userRepository.updatePointsByUserId(referredBy);
-		if (userRepository.getOne(referredBy).getPoints() % 50 ==0) {
-			userRepository.updateLevelByUserId(referredBy);
+	private String updateUserPointLevel(Integer referredBy) {
+		try {
+			userRepository.updatePointsByUserId(referredBy);
+			if (userRepository.getOne(referredBy).getPoints() % 50 ==0) {
+				userRepository.updateLevelByUserId(referredBy);
+			}
+			return "success";
+		} catch (Exception e) {
+			return "fail "+e.toString();
 		}
 	}
 

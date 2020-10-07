@@ -17,6 +17,7 @@ import com.art_project.model.ConnectModel;
 import com.art_project.model.result.Result;
 import com.art_project.model.result.ResultWrapper;
 import com.art_project.repository.ConnectRepository;
+import com.twilio.rest.api.v2010.account.Message;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,9 @@ public class ConnectService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	private ResultWrapper<ConnectModel> result;
 
@@ -41,9 +45,17 @@ public class ConnectService {
 		try {
 //			connectModel.setUserModel(userService.getUserModel());
 			connectModel.setDateInvite(new java.sql.Date(System.currentTimeMillis()));
-			result.setResult(connectRepository.save(connectModel));
-			result.setStatus(Result.SUCCESS);
-			result.setMessage("successfully saved the connect details");
+			System.out.println("SAVE connectModel : "+connectModel);
+			ResultWrapper<Message> messageResult = messageService.sendMessage(connectModel.getMobile(), "You are invited to join art project");
+			if (messageResult.getMessage().equalsIgnoreCase("success")) {
+				result.setResult(connectRepository.save(connectModel));
+				result.setStatus(Result.SUCCESS);
+				result.setMessage("successfully saved the connect details");
+			} else {
+				result.setResult(null);
+				result.setStatus(Result.FAIL);
+				result.setMessage("failed to save connect because message can't be sent to invited user : "+messageResult.getMessage());
+			}
 			return result;
 		} catch (Exception e) {
 			result.setResult(null);
@@ -105,31 +117,19 @@ public class ConnectService {
 //		return result;
 //	}
 	
-	public ResultWrapper<ConnectModel> updateConnectStatusForInvitedUser(Integer referredBy, String mobile) {
+	public String updateConnectStatusForInvitedUser(Integer referredBy, String mobile) {
 		try {
-			ConnectModel connectModel = null;
-			try {
-				connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile);
-			} catch (Exception e) {
-				System.out.println("EXCEPTION IN : connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile)");
-			}
+			ConnectModel connectModel = connectRepository.findByUserIdAndMobile(referredBy, mobile);
+			System.out.println("ConnectModel found : "+connectModel);
 			connectModel.setStatus("connected");
 			connectModel.setDateConnect(Date.valueOf(LocalDate.now()));
-//			result.setResult(connectRepository.save(connectModel));
-			try {
-				result.setResult(connectRepository.save(connectModel));
-			} catch (Exception e) {
-				System.out.println("EXCEPTION IN : result.setResult(connectRepository.save(connectModel));");
-			}
-			result.setStatus(Result.SUCCESS);
-			result.setMessage("status and connect date is updated");
+			ConnectModel updateConnectModel = connectRepository.save(connectModel);
+			System.out.println("ConnectModel status and connectDate updated : "+updateConnectModel);
+			return "success";
 		} 
 		catch (Exception e) {
-			result.setResult(null);
-			result.setStatus(Result.FAIL);
-			result.setMessage("exception in updating connect status and date : "+e.toString());
+			return "fail "+e.toString();
 		}
-		return result;
 	}
 
 //	public ResultWrapper<ConnectModel> updateInvitedUserStatus(Integer referralId, String mobile) {

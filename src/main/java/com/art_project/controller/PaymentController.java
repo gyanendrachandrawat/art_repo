@@ -72,7 +72,7 @@ public class PaymentController {
 					// the signup user is a invited user. update signup user's status to "connected"
 					// in connect table and inviting user's point and level.
 					System.out.println("Payment By Invited User - ReferralId : " + userModel.getReferredBy());
-					ResultWrapper<Object> updateConnectStatusReferringUserPointUpdateResult = userService
+					String updateConnectStatusReferringUserPointUpdateResult = userService
 							.updateUserPointLevelAndConnectStatus(userModel);
 				} 
 				else {

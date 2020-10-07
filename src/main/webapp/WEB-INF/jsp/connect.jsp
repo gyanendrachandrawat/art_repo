@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,7 +119,7 @@
 				class="navbar-nav border rounded color-light-gray align-items-center p-1 mr-2 w-10 point pointConnect"
 				onclick="connectShow()">
 				<span class="mr-1 mt-0 nav-item color-white"><i
-					class="fa fa-check" aria-hidden="true"></i></i></span>
+					class="fa fa-check" aria-hidden="true"></i></span>
 				<p class="mr-2 m-0 nav-item color-white size-16 display-4">Connected</p>
 				<p class="m-0 nav-item color-white size-16 display-4">31</p>
 			</div>
@@ -197,7 +196,12 @@
 						</button>
 					</div>
 				</form:form>
+				<% if(session.getAttribute("inviteSubmitResponse") != null){
+						%>
+						<p>response : <%=session.getAttribute("inviteSubmitResponse").toString() %></p>
+						<%} %>
 			</div>
+			
 			<div class="float-left">
 				<!-- BAR CODE -->
 				<!-- <img class="w-50 h-50 p-4 mt-3" src="/icons/img_avatar.png" alt="barcode" id="barcode"> -->

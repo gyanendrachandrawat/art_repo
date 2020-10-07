@@ -64,6 +64,12 @@
 					</small>
 				</div>
 			</form:form>
+			
+			<% if(session.getAttribute("loginSubmitResponse") != null){
+						%>
+						<p>response : <%=session.getAttribute("loginSubmitResponse").toString() %></p>
+						<%} %>
+			
 		</div>
 	</div>
 </body>

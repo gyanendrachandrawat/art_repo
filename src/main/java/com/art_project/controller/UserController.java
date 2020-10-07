@@ -91,6 +91,10 @@ public class UserController {
 
 	@GetMapping(value = "/login")
 	public String loginGet(HttpServletRequest request, Model model, @ModelAttribute("userModel") UserModel userModel) {
+		
+		session = request.getSession();
+		session.setAttribute("loginSubmitResponse", null);
+		
 		return "login";
 	}
 
@@ -133,6 +137,9 @@ public class UserController {
 			}
 		} else {
 			request.setAttribute("loginStatus", "username or password incorrect.");
+			
+			session.setAttribute("loginSubmitResponse","Incorrect UserName and Password, please Enter correct credentials.");
+			
 			System.out.println(" token: " + token);
 			return "login";
 		}
