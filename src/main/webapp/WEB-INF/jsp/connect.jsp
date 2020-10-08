@@ -112,7 +112,15 @@
 					class="fa fa-clock-o" aria-hidden="true"></i> <!-- <img src="Asset/Images/clock.png" alt="clock" class="color-white"> -->
 				</span>
 				<p class="mr-2 m-0 nav-item color-white size-16 display-4 mr-auto">Pending</p>
-				<p class=" m-0 nav-item color-white size-16 display-4">31</p>
+				<!-- <p class=" m-0 nav-item color-white size-16 display-4">31</p> -->
+				<%
+					if (session.getAttribute("pendingCount") != null) {
+				%>
+				<p class="m-0 nav-item color-white size-16 display-4">
+					<%=session.getAttribute("pendingCount").toString()%></p>
+				<%
+					}
+				%>
 			</div>
 
 			<div
@@ -121,7 +129,15 @@
 				<span class="mr-1 mt-0 nav-item color-white"><i
 					class="fa fa-check" aria-hidden="true"></i></span>
 				<p class="mr-2 m-0 nav-item color-white size-16 display-4">Connected</p>
-				<p class="m-0 nav-item color-white size-16 display-4">31</p>
+				<!-- <p class="m-0 nav-item color-white size-16 display-4">31</p> -->
+				<%
+					if (session.getAttribute("connectedCount") != null) {
+				%>
+				<p class="m-0 nav-item color-white size-16 display-4">
+					<%=session.getAttribute("connectedCount").toString()%></p>
+				<%
+					}
+				%>
 			</div>
 
 			<div
@@ -196,12 +212,15 @@
 						</button>
 					</div>
 				</form:form>
-				<% if(session.getAttribute("inviteSubmitResponse") != null){
-						%>
-						<p>response : <%=session.getAttribute("inviteSubmitResponse").toString() %></p>
-						<%} %>
-			</div>
-			
+		<%
+			if (session.getAttribute("inviteSubmitResponse") != null) {
+		%>
+		<p style="font-size:13px; font-family:verdana; color:white">
+			<%=session.getAttribute("inviteSubmitResponse").toString()%></p>
+		<%
+			}
+		%>
+			</div>			
 			<div class="float-left">
 				<!-- BAR CODE -->
 				<!-- <img class="w-50 h-50 p-4 mt-3" src="/icons/img_avatar.png" alt="barcode" id="barcode"> -->

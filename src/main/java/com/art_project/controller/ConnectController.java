@@ -58,7 +58,14 @@ public class ConnectController {
 
 		result = connectService.saveConnect(connectModel);
 		
+		// sending response on submit of invite form
 		session.setAttribute("inviteSubmitResponse", result.getMessage());
+		
+		// sending counts of pending and connected invites
+		session.setAttribute("pendingCount", connectService.getInviteCountsByStatusAndUserId("pending", userId));
+		
+		session.setAttribute("connectedCount", connectService.getInviteCountsByStatusAndUserId("connected", userId));
+		
 
 		// new MessageService().sendMessage(connectModel.getMobile());
 //		HttpSession session = request.getSession();
@@ -95,7 +102,13 @@ public class ConnectController {
 //		String inviteLink = "http://localhost:8080/referral?referralId="+userId;
 		System.out.println("userId : "+userId);
 		
+		// sending response on submit of invite form
 		session.setAttribute("inviteSubmitResponse", null);
+		
+		// sending counts of pending and connected invites
+		session.setAttribute("pendingCount", connectService.getInviteCountsByStatusAndUserId("pending", userId));
+		session.setAttribute("connectedCount", connectService.getInviteCountsByStatusAndUserId("connected", userId));
+		
 		
 		String inviteLink = "localhost:8080/referral?referralId=" + userId;
 		System.out.println("inviteLink : " + inviteLink);
@@ -125,33 +138,6 @@ public class ConnectController {
 
 		ArrayList<ConnectModel> resultConnectList = connectService.getInviteData(userId, status);
 
-//		For testing only if the list is Empty or getting NullPointerException
-//		try {
-//			resultConnectList = connectService.getInviteData(userId, status);
-//		} catch (NullPointerException e) {
-//			ConnectModel catchModel = new ConnectModel();
-//			catchModel.setName("name1");
-//			catchModel.setMobile("1111111111");
-//			catchModel.setStatus(status);
-//			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
-//
-//			resultConnectList.add(catchModel);
-//
-//		}
-//
-//		if (resultConnectList.isEmpty()) {
-//			ConnectModel catchModel = new ConnectModel();
-//			catchModel.setName("name1");
-//			catchModel.setMobile("1111111111");
-//			catchModel.setStatus(status);
-//			catchModel.setDateInvite(Date.valueOf(LocalDate.now()));
-//
-//			resultConnectList.add(catchModel);
-//		}
-
-		for (ConnectModel resultModel : resultConnectList) {
-			System.out.println(resultModel);
-		}
 		System.out.println(status+" data sent for user "+userId);
 		return new ResponseEntity<>(resultConnectList, HttpStatus.OK);
 

@@ -79,10 +79,11 @@ public class PaymentController {
 					System.out.println("Payment by Not Invited User");
 				}
 			}
-
+			System.out.println("redirectSuccess : "+session.getAttribute("redirectSuccess"));
 			return "redirect:/" + session.getAttribute("redirectSuccess");
 		} else {
 			request.setAttribute("paymentStatus", "payment failed due to following reason: " + charge.getDescription());
+			System.out.println("redirectError : "+ session.getAttribute("redirectError"));
 			return "redirect:/" + session.getAttribute("redirectError");
 		}
 	}

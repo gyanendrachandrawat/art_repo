@@ -51,7 +51,9 @@ public class MessageService {
 		} catch (Exception e) {
 			result.setResult(null);
 			result.setStatus(Result.FAIL);
-			result.setMessage("fail"+e.toString());
+			result.setMessage(e.toString());
+			System.out.println("Twilio Exception : ");
+			e.printStackTrace();
 		}
 		
 		return result;

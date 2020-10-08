@@ -53,23 +53,21 @@
 							Password?</a>
 					</small>
 				</div>
-
 				<div class="submit-btn text-center">
 					<input id="login" type="submit" value="Submit" class="btn btn-dark" />
 				</div>
-
+				<%
+					if (session.getAttribute("loginSubmitResponse") != null) {
+				%>
+				<p style="font-size:11px; font-family:verdana; color:red">
+					<%=session.getAttribute("loginSubmitResponse").toString()%></p>
+				<%} %>
 				<div class="w-50 mx-auto my-auto text-center position-relative">
 					<small class="position-absolute new-user">New to product? <a
 						href="/sign-up">Sign Up </a>
 					</small>
 				</div>
 			</form:form>
-			
-			<% if(session.getAttribute("loginSubmitResponse") != null){
-						%>
-						<p>response : <%=session.getAttribute("loginSubmitResponse").toString() %></p>
-						<%} %>
-			
 		</div>
 	</div>
 </body>

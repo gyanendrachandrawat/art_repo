@@ -50,17 +50,21 @@ public class ConnectService {
 			if (messageResult.getMessage().equalsIgnoreCase("success")) {
 				result.setResult(connectRepository.save(connectModel));
 				result.setStatus(Result.SUCCESS);
-				result.setMessage("successfully saved the connect details");
+				result.setMessage("successfully sent the invite.");
 			} else {
 				result.setResult(null);
 				result.setStatus(Result.FAIL);
-				result.setMessage("failed to save connect because message can't be sent to invited user : "+messageResult.getMessage());
+				result.setMessage("failed to save invite because message can't be sent to invited user : "+messageResult.getMessage());
 			}
+//			result.setResult(connectRepository.save(connectModel));
+//			result.setStatus(Result.SUCCESS);
+//			result.setMessage("successfully sent the invite.");
+			System.out.println(result.getMessage());
 			return result;
 		} catch (Exception e) {
 			result.setResult(null);
 			result.setStatus(Result.FAIL);
-			result.setMessage("failed to save connect, exception: " + e);
+			result.setMessage("failed to save invite : " + e);
 			return result;
 		}
 	}
@@ -129,6 +133,14 @@ public class ConnectService {
 		} 
 		catch (Exception e) {
 			return "fail "+e.toString();
+		}
+	}
+
+	public Integer getInviteCountsByStatusAndUserId(String status, Integer userId) {
+		try {
+			return connectRepository.getInviteCountsByStatusAndUserId(status, userId);
+		} catch (Exception e) {
+			return 00;
 		}
 	}
 

@@ -25,9 +25,9 @@
 			<div class="row">
 				<div class="col-md-6 col-sm-offset-3">
 					<h2 class="text-align-center">Payment</h2>
-					<p style="color: red">
+					<%-- <p style="color: red">
 						<!-- <%= request.getAttribute("paymentStatus")%> -->
-					</p>
+					</p> --%>
 					<form action="/pay" method="post" id="payment-form">
 
 						<div class="form-group justify-content-center">
@@ -97,7 +97,7 @@
 	<script src="https://js.stripe.com/v3/"></script>
 	<script type="text/javascript">
 		//Create a Stripe client.
-		var stripe = Stripe('pk_test_2ioqq867zoX3kqSLSmL2mtvI00D3lvqvpi');
+		var stripe = Stripe('pk_test_51HVIfRHKAW0vilJWYAdqfR4WeU9vG7xPC1IPhUjr2jn9Z1r7ercONJ3wO5BMQNmLm6QFwrNtgvRJWh2TUNmfnTnp00obR3zF5x');
 
 		// Create an instance of Elements.
 		var elements = stripe.elements();

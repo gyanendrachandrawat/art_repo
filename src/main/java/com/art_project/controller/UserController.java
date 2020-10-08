@@ -138,7 +138,7 @@ public class UserController {
 		} else {
 			request.setAttribute("loginStatus", "username or password incorrect.");
 			
-			session.setAttribute("loginSubmitResponse","Incorrect UserName and Password, please Enter correct credentials.");
+			session.setAttribute("loginSubmitResponse","Incorrect UserName or Password.");
 			
 			System.out.println(" token: " + token);
 			return "login";
@@ -198,7 +198,6 @@ public class UserController {
 			
 			return "redirect:/pay";
 		}
-
 		else
 			return "redirect:/login";
 	}

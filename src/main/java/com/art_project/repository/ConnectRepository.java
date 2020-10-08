@@ -34,4 +34,7 @@ public interface ConnectRepository extends JpaRepository<ConnectModel, Integer> 
 
 //	ConnectModel findByUserIdAndMobile(Integer referralId, String mobile);
 	ConnectModel findByUserIdAndMobile(Integer referralId, String mobile);
+	
+	@Query(value = "SELECT COUNT(mobile) FROM connect WHERE status =:status AND userId =:userId", nativeQuery = true)
+	Integer getInviteCountsByStatusAndUserId(String status, Integer userId);
 }
